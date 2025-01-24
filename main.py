@@ -134,7 +134,8 @@ def create_profile():
         "top_k": 50,
         "top_p": 0.9,
         "repetition_penalty": 1.2,
-        "num_return_sequences": 1
+        "num_return_sequences": 1,
+        "submissions": []
     }
 
     with open(profile_path, 'w') as file:
@@ -198,7 +199,13 @@ def index():
 @app.route('/save', methods=['POST'])
 def save():
     data = request.json
-    save_data(data, DATA_FILE)
+    profiles = get_profiles()
+    if not profiles:
+        return jsonify({"error": "No profiles found"}), 404
+    profile_name = profiles[0].replace('.json', '')
+    profile = load_profile(profile_name)
+    profile['data'] = data  # Save data to the profile
+    save_profile(profile_name, profile)
     return jsonify({"message": "Data saved successfully!"})
 
 @app.route('/submit', methods=['POST'])
@@ -207,7 +214,7 @@ def submit():
     result = generate_response(data, model, tokenizer)
 
     submission_entry = {
-        "model_used": data.get("name", "Unknown Model"),  # Get the model name
+        "model_used": data.get("name", "Unknown Model"),
         "user_input": result["user_input"],
         "final_prompt": result["final_prompt"],
         "ai_response": result["ai_response"],
@@ -216,9 +223,21 @@ def submit():
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
     }
 
-    submissions = load_data(SUBMISSIONS_FILE, [])
-    submissions.append(submission_entry)
-    save_data(submissions, SUBMISSIONS_FILE)
+    # Get first profile instead of using SUBMISSIONS_FILE
+    profiles = get_profiles()
+    if not profiles:
+        return jsonify({"error": "No profiles found"}), 404
+    
+    profile_name = profiles[0].replace('.json', '')
+    profile = load_profile(profile_name)
+    
+    # Initialize submissions list if it doesn't exist
+    if 'submissions' not in profile:
+        profile['submissions'] = []
+    
+    # Add new submission to profile
+    profile['submissions'].append(submission_entry)
+    save_profile(profile_name, profile)  # Save updated profile
 
     return jsonify({
         "message": "Data submitted successfully!",
@@ -227,14 +246,24 @@ def submit():
     })
 
 
+
 @app.route('/load', methods=['GET'])
 def load():
-    data = load_data(DATA_FILE, {})
-    return jsonify(data)
+    profiles = get_profiles()
+    if not profiles:
+        return jsonify(DEFAULT_PROFILE.get('data', {}))
+    profile_name = profiles[0].replace('.json', '')
+    profile = load_profile(profile_name)
+    return jsonify(profile.get('data', {}))
 
 @app.route('/get_submissions', methods=['GET'])
 def get_submissions():
-    submissions = load_data(SUBMISSIONS_FILE, [])
+    profiles = get_profiles()
+    if not profiles:
+        return jsonify([])
+    profile_name = profiles[0].replace('.json', '')
+    profile = load_profile(profile_name)
+    submissions = profile.get('submissions', [])
     return jsonify(submissions)
 
 if __name__ == '__main__':

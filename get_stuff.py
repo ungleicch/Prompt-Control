@@ -10,11 +10,15 @@ def get_profiles():
 
 def save_profile(profile_name, profile_data):
     profile_path = os.path.join(PROFILE_DIR, profile_name + '.json')
-    for key, value in profile_data.items():
-        if value == "undefined":
-            profile_data[key] = ""
-    with open(profile_path, 'w') as file:
-        json.dump(profile_data, file, indent=4)
+    try:
+        # Validate JSON serialization
+        json.dumps(profile_data)  # Test serialization before saving
+        with open(profile_path, 'w') as file:
+            json.dump(profile_data, file, indent=4)
+    except TypeError as e:
+        print(f"Invalid data type in profile: {e}")
+    except Exception as e:
+        print(f"Error saving profile: {e}")
 
 def load_data(filename, default_value=None):
     if os.path.exists(filename):
@@ -29,13 +33,20 @@ def save_data(data, filename):
     with open(filename, 'w') as file:
         json.dump(data, file, indent=4)
 
+
 def load_profile(profile_name):
     profile_path = os.path.join(PROFILE_DIR, profile_name + '.json')
     if os.path.exists(profile_path):
-        with open(profile_path, 'r') as file:
-            profile = json.load(file)
-            profile['image'] = profile.get('image', 'default.jpg')
-            return profile
+        try:
+            with open(profile_path, 'r') as file:
+                profile = json.load(file)
+                # Ensure all required fields exist
+                profile.setdefault('submissions', [])
+                profile['image'] = profile.get('image', 'default.jpg')
+                return profile
+        except json.JSONDecodeError as e:
+            print(f"Error loading {profile_name}: {e}")
+            return DEFAULT_PROFILE
     return DEFAULT_PROFILE
 
 def load_model():
