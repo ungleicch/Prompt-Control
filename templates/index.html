@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Model</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Prompt Model</h1>
+
+    <div style="display: flex; justify-content: flex-end; align-items: center; flex-direction: column;">
+        <select id="profileSelect" onchange="switchProfile()" style="margin-bottom: 10px;">
+            <!-- Profiles will be dynamically populated -->
+        </select>
+        <h2 id="profileNameDisplay">Profile Name</h2>
+        <img id="profileImageDisplay" src="static/images/default.jpg" alt="Profile Image" 
+             style="width:120px; height:120px; border-radius:50%; box-shadow: 0px 4px 10px rgba(0,0,0,0.2);">
+    </div>
+    
+
+    <h3>Create New Profile</h3>
+    <input type="text" id="newProfileName" placeholder="Enter profile name" style="width: 200px;">
+    <input type="file" id="profileImage" accept="image/*" style="width: 200px;">
+    <button class="create-profile" onclick="createProfile()">Create Profile</button>
+
+
+
+    
+
+
+    <form id="promptForm">
+        <div class="form-container">
+            <fieldset>
+                <legend>Personality Information</legend>
+                <label for="name">Name:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">The AI's assigned name for responses.</small>
+                </label>
+                <input type="text" id="name"><br>
+
+                <label for="tone">Tone:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Defines the attitude in responses.</small>
+                </label>
+                <input type="text" id="tone"><br>
+
+                <label for="interests">Interests:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Topics the AI is interested in.</small>
+                </label>
+                <input type="text" id="interests"><br>
+
+                <label for="background">Background:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">The AI's persona and context.</small>
+                </label>
+                <input type="text" id="background"><br>
+
+                <label for="mood">Mood:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Sets the AI's emotional tone.</small>
+                </label>
+                <input type="text" id="mood"><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Response Preferences</legend>
+                <label for="response_style">Response Style:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Dictates the AI's response structure.</small>
+                </label>
+                <input type="text" id="response_style"><br>
+
+                <label for="preferences">Preferences:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Specific AI behavior preferences.</small>
+                </label>
+                <input type="text" id="preferences"><br>
+
+                <label for="input_text">Input Text:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Your question or input for the AI.</small>
+                </label>
+                <textarea id="input_text"></textarea><br>
+            </fieldset>
+        </div>
+
+        <div class="form-container">
+            <fieldset>
+                <legend>Model Configuration</legend>
+                <label for="temperature">Temperature:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Higher values make responses more random and creative.</small>
+                </label>
+                <input type="number" id="temperature" min="0" max="1" step="0.01" value="0.7"><br>
+
+                <label for="max_length">Max Length:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Maximum number of words the AI can generate.</small>
+                </label>
+                <input type="number" id="max_length" min="10" max="2000" value="150"><br>
+
+                <label for="top_k">Top K:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Limits selection to the top K most likely words.</small>
+                </label>
+                <input type="number" id="top_k" min="0" value="50"><br>
+
+                <label for="top_p">Top P:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Controls sampling diversity with nucleus sampling.</small>
+                </label>
+                <input type="number" id="top_p" min="0" max="1" step="0.01" value="0.9"><br>
+
+                <label for="repetition_penalty">Repetition Penalty:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Discourages repeating words or phrases.</small>
+                </label>
+                <input type="number" id="repetition_penalty" min="1" max="2" step="0.1" value="1.2"><br>
+
+                <label for="num_return_sequences">Number of Responses:
+                    <span class="tooltip"></span>
+                    <small class="tooltip-text">Number of response variations generated.</small>
+                </label>
+                <input type="number" id="num_return_sequences" min="1" max="5" value="1"><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Generated Prompt</legend>
+                <div class="prompt-container">
+                    <pre id="generated_prompt" style="white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 1.1em;"></pre>
+                </div>
+            </fieldset>
+            
+            
+            
+            <fieldset>
+                <legend>Current Model Settings</legend>
+                <div class="prompt-container">
+                    <pre id="model_settings"></pre>
+                </div>
+            </fieldset>
+            
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>AI Response</h2>
+    <div id="ai_response" style="white-space: pre-line; font-family: monospace;"></div>
+
+    <h2>Submission History</h2>
+    <div id="submission_history"></div>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

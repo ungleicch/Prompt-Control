@@ -1,0 +1,302 @@
+/* Modern Professional CSS Theme */
+:root {
+    --primary: #2C3E50;
+    --secondary: #18BC9C;
+    --accent: #2980B9;
+    --background: #ECF0F1;
+    --text: #2C3E50;
+    --card-bg: #FFFFFF;
+    --success: #27ae60;
+    --border: #DFE4E6;
+}
+
+/* General Styling */
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px 20px;
+    background-color: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+/* Header Styles */
+h1 {
+    text-align: center;
+    color: var(--primary);
+    font-size: 2.8em;
+    margin-bottom: 30px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: var(--secondary);
+}
+
+/* Form Layout */
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* Fieldset Card Styling */
+fieldset {
+    flex: 1;
+    min-width: 300px;
+    background-color: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+fieldset:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+legend {
+    font-weight: 600;
+    font-size: 1.3em;
+    color: var(--primary);
+    padding: 0 15px;
+}
+
+/* Form Elements */
+input, textarea {
+    width: calc(100% - 24px);
+    padding: 14px;
+    margin: 10px 0;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 1em;
+    background: var(--card-bg);
+    transition: all 0.25s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(24, 188, 156, 0.2);
+    outline: none;
+}
+
+/* Button Styles */
+button {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease;
+}
+
+button:hover {
+    background: #16A085;
+    box-shadow: 0 5px 15px rgba(24, 188, 156, 0.3);
+}
+
+/* Prompt Display */
+#generated_prompt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.1em;
+    background-color: var(--card-bg);
+    padding: 25px;
+    border: 2px solid var(--secondary);
+    border-radius: 8px;
+    color: var(--text);
+    margin-top: 20px;
+}
+
+.tooltip {
+    font-size: 1.2em;
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+    background-color: #18BC9C;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 5px;
+    box-shadow: 0px 0px 10px rgba(122, 207, 163, 0.6);
+}
+
+.tooltip::after {
+    content: 'i';
+    font-size: 1.1em;
+}
+
+/* Tooltip text styling */
+.tooltip-text {
+    display: none;
+    background: rgba(145, 141, 143, 0.9);
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1em;
+    max-width: 300px;
+    white-space: normal;
+    text-align: center;
+    box-shadow: 0px 4px 15px rgba(130, 116, 123, 0.5);
+    z-index: 1000;
+}
+
+/* Show tooltip text on hover */
+.tooltip:hover + .tooltip-text {
+    display: block;
+}
+
+
+/* Profile System */
+#profileSelect {
+    padding: 12px;
+    font-size: 1.1em;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#profileSelect:hover {
+    border-color: var(--secondary);
+}
+
+#profileNameDisplay {
+    font-size: 1.8em;
+    color: var(--primary);
+    font-weight: 600;
+    margin: 15px 0;
+}
+
+#profileImageDisplay {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--secondary);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* People Management */
+.add-person-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-weight: 600;
+    margin: 15px 0;
+}
+
+.add-person-btn:hover {
+    background: #16a085;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(24, 188, 156, 0.3);
+}
+
+.add-person-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.profile-list {
+    display: grid;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.profile-card {
+    background: var(--card-bg);
+    padding: 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease;
+}
+
+.profile-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--secondary);
+}
+
+/* Submission Entries */
+.submission-entry {
+    background: var(--card-bg);
+    border-left: 4px solid var(--secondary);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 6px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.highlight {
+    background: rgba(24, 188, 156, 0.1);
+    color: var(--secondary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 15px;
+    }
+    
+    fieldset {
+        min-width: 100%;
+    }
+    
+    h1 {
+        font-size: 2.2em;
+    }
+    
+    .form-container {
+        flex-direction: column;
+    }
+}
