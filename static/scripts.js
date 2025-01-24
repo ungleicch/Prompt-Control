@@ -485,12 +485,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     let inputs = document.querySelectorAll("#promptForm input, #promptForm textarea");
-//     inputs.forEach(input => {
-//         input.addEventListener("input", generatePromptPreview);
-//     });
+document.addEventListener("DOMContentLoaded", function() {
+    let inputs = document.querySelectorAll("#promptForm input, #promptForm textarea");
+    inputs.forEach(input => {
+        input.addEventListener("input", generatePromptPreview);
+    });
 
-//     // Generate initial preview on load
-//     generatePromptPreview();
-// });
+    // Generate initial preview on load
+    generatePromptPreview();
+});

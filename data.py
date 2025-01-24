@@ -3,7 +3,6 @@ DATA_FILE = 'data.json'
 SUBMISSIONS_FILE = 'submissions.json'
 MODEL_NAME = "mistralai/Mistral-7B-v0.1"
 PROFILE_DIR = 'profiles/'
-PROFILE_DIR = 'profiles/'
 IMAGE_DIR = 'static/images/'
 
 
