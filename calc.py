@@ -2,6 +2,7 @@ import re
 import difflib
 import torch
 from config import DEFAULT_PROFILE
+from data import FORBIDDEN_PATTERNS
 
 def preprocess_input(data, tokenizer):
     user_provided_data = {
@@ -93,7 +94,7 @@ def process_response(final_prompt, ai_response):
 
     return ai_response, bool(repeated_phrases or thinking_matches)
 
-def generate_response(data, model, tokenizer):
+def generate_response(data, model, tokenizer): # add the different trys 
     inputs, final_prompt, user_provided_data = preprocess_input(data, tokenizer)
     device = torch.device("mps")
     model.to(device)
@@ -135,3 +136,17 @@ def generate_response(data, model, tokenizer):
             "repeated": False,
             "original_response": "Error occurred during processing."
         }
+        
+def contains_forbidden_words(text):
+    detected_words = []
+    text_lower = text.lower()
+    
+    for pattern, canonical in FORBIDDEN_PATTERNS.items():
+        if re.search(pattern, text_lower):
+            detected_words.append(canonical)
+    
+    return {
+        'contains': len(detected_words) > 0,
+        'count': len(detected_words),
+        'words': list(set(detected_words))  # Deduplicate while preserving first occurrence order
+    }

@@ -7,7 +7,7 @@ import time
 import re
 import difflib
 from flask import send_from_directory
-from data import DATA_FILE, SUBMISSIONS_FILE, MODEL_NAME, PROFILE_DIR, IMAGE_DIR, DEFAULT_PROFILE
+from data import SUBMISSIONS_FILE, MODEL_NAME, PROFILE_DIR, IMAGE_DIR, DEFAULT_PROFILE
 from get_stuff import get_profiles, save_profile, load_data, save_data, load_profile, load_model
 from calc import preprocess_input, process_response, generate_response
 
@@ -88,9 +88,8 @@ def get_image(filename):
 
 
 
-# Initialize data files if they don't exist
-if not os.path.exists(DATA_FILE):
-    save_data({}, DATA_FILE)
+
+    
 if not os.path.exists(SUBMISSIONS_FILE):
     save_data([], SUBMISSIONS_FILE)
 
@@ -143,13 +142,13 @@ def create_profile():
     return jsonify({"message": f"Profile '{profile_name}' created successfully!", "profile": new_profile})
 
 
-@app.route('/profile/load', methods=['GET'])
-def load_default_profile():
-    profiles = get_profiles()
-    if profiles:
-        profile = load_profile(profiles[0])  # Load first profile as default
-        return jsonify(profile)
-    return jsonify(DEFAULT_PROFILE)
+# @app.route('/profile/load', methods=['GET'])
+# def load_default_profile():
+#     profiles = get_profiles()
+#     if profiles:
+#         profile = load_profile(profiles[0])  # Load first profile as default
+#         return jsonify(profile)
+#     return jsonify(DEFAULT_PROFILE)
 
 @app.route('/profile/switch', methods=['POST'])
 def switch_profile():
@@ -195,12 +194,6 @@ def update_profile_image():
 def index():
     return render_template('index.html')
 
-@app.route('/save', methods=['POST'])
-def save():
-    data = request.json
-    save_data(data, DATA_FILE)
-    return jsonify({"message": "Data saved successfully!"})
-
 @app.route('/submit', methods=['POST'])
 def submit():
     data = request.json
@@ -228,9 +221,12 @@ def submit():
 
 
 @app.route('/load', methods=['GET'])
-def load():
-    data = load_data(DATA_FILE, {})
-    return jsonify(data)
+def load_default_profile():
+    profiles = get_profiles()
+    if profiles:
+        profile = load_profile(profiles[0])  # Load first profile as default
+        return jsonify(profile)
+    return jsonify(DEFAULT_PROFILE)
 
 @app.route('/get_submissions', methods=['GET'])
 def get_submissions():

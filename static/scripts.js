@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     loadStoredData();
     loadSubmissionHistory();
+    generatePromptPreview();
+    updatePrompt();
+    updateConfigValues();
 
     document.getElementById('promptForm').addEventListener('submit', function (event) {
         event.preventDefault();
@@ -39,6 +42,7 @@ function loadProfiles() {
                 profileSelect.appendChild(option);
             });
             loadProfile(profiles[0]);
+
         });
 }
 
@@ -50,16 +54,33 @@ function loadProfile(profileName) {
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById("name").value = data.name;
-        document.getElementById("tone").value = data.tone;
-        document.getElementById("interests").value = data.interests;
-        document.getElementById("background").value = data.background;
-        document.getElementById("mood").value = data.mood;
-        document.getElementById("response_style").value = data.response_style;
-        document.getElementById("preferences").value = data.preferences;
-        document.getElementById("input_text").value = data.input_text;
+        // Set personality fields
+        document.getElementById("name").value = data.name || "";
+        document.getElementById("tone").value = data.tone || "";
+        document.getElementById("interests").value = data.interests || "";
+        document.getElementById("background").value = data.background || "";
+        document.getElementById("mood").value = data.mood || "";
+        document.getElementById("response_style").value = data.response_style || "";
+        document.getElementById("preferences").value = data.preferences || "";
+        document.getElementById("input_text").value = data.input_text || "";
+        
+        // Set model configuration fields
+        document.getElementById("temperature").value = data.temperature || 0.7;
+        document.getElementById("max_length").value = data.max_length || 150;
+        document.getElementById("top_k").value = data.top_k || 50;
+        document.getElementById("top_p").value = data.top_p || 0.9;
+        document.getElementById("repetition_penalty").value = data.repetition_penalty || 1.2;
+        document.getElementById("num_return_sequences").value = data.num_return_sequences || 1;
+
+        // Update UI components
+        updateConfigValues();
+        generatePromptPreview();
+        updatePrompt();
+
+        // Set profile image
         document.getElementById("profileImageDisplay").src = "/image/" + data.image;
-    });
+    })
+    .catch(error => console.error('Error loading profile:', error));
 }
 window.onload = loadProfiles;
 
@@ -97,12 +118,11 @@ function switchProfile() {
         document.getElementById("num_return_sequences").value = data.num_return_sequences || 1;
 
         // Update model settings and prompt preview
-        updateModelSettings();
+        updateConfigValues();
         generatePromptPreview();
 
         // Update profile name and image
         document.getElementById("profileNameDisplay").innerText = data.name || "Profile Name";
-        document.getElementById("profileImageDisplay").src = `/image/${data.image}`;
     })
     .catch(error => console.error('Error loading profile:', error));
 }
@@ -121,9 +141,7 @@ function generatePromptPreview() {
 
 <b>Guidelines:</b>
 - Answer user questions concisely and avoid repeating your profile information.
-- Respond in a way that aligns with the given tone and response style.
-- If you need to think, use <thinking>...</thinking> to indicate your thought process.
-
+- Respond in a way that aligns with the given tone and response style, go into detail.
 <b>User Input:</b> ${highlightText(document.getElementById("input_text").value)}
 <b>Assistant:</b>
 `;
@@ -263,7 +281,7 @@ function submitFormData() {
 
     // Disable input fields and show processing message
     toggleFormInputs(true);
-    displayPendingSubmission(data.input_text);
+    displayPendingSubmission(data.input_text, data);  // Pass data to the function
 
     fetch('/submit', {
         method: 'POST',
@@ -280,6 +298,7 @@ function submitFormData() {
         toggleFormInputs(false);
     });
 }
+
 
 function updateHistory(responseText, repeated, originalResponse) {
     const historyContainer = document.getElementById('submission_history');
@@ -299,14 +318,15 @@ function updateHistory(responseText, repeated, originalResponse) {
 
 
 // Function to show pending input in history
-function displayPendingSubmission(inputText) {
+function displayPendingSubmission(inputText, submissionData) {
     const historyContainer = document.getElementById('submission_history');
     historyContainer.innerHTML = `
         <div class="submission pending">
             <strong>Input:</strong> ${inputText} <br>
-            <strong>Status:</strong> Sending to AI...
+            <strong>Status:</strong> ${submissionData.name} is typing ...
         </div><hr>` + historyContainer.innerHTML;
 }
+
 
 // Function to enable/disable input fields during submission
 function toggleFormInputs(disabled) {
@@ -343,11 +363,14 @@ function loadStoredData() {
                 document.getElementById(key).value = data[key];
             }
         }
-        updatePrompt();
+        loadProfiles();
         updateConfigValues();
+        generatePromptPreview();
     })
     .catch(error => console.error('Error loading data:', error));
 }
+
+window.onload = loadStoredData()
 
 document.addEventListener('DOMContentLoaded', function () {
     loadSubmissionHistory();
@@ -388,7 +411,7 @@ function updatePrompt() {
         `- Mood: <span class="highlight">${document.getElementById('mood').value}</span>\n` +
         `- Response Style: <span class="highlight">${document.getElementById('response_style').value}</span>\n` +
         `- Preferences: <span class="highlight">${document.getElementById('preferences').value}</span>\n\n` +
-        `Guidelines:\n` + 
+        `Guidelines:\n` +
         `- Answer user questions concisely and avoid repetition.\n` +
         `User: <span class="highlight">${document.getElementById('input_text').value}</span>\n<span">${document.getElementById('name').value}</span>:`;
 
@@ -473,24 +496,23 @@ function saveProfileRealtime() {
     .catch(error => console.error('Error saving profile:', error));
 }
 
-
 document.addEventListener("DOMContentLoaded", function() {
     let inputs = document.querySelectorAll("#promptForm input, #promptForm textarea");
     inputs.forEach(input => {
         input.addEventListener("input", () => {
             saveProfileRealtime();
             generatePromptPreview();
-            updateModelSettings();
+            updateConfigValues();
         });
     });
 });
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     let inputs = document.querySelectorAll("#promptForm input, #promptForm textarea");
-//     inputs.forEach(input => {
-//         input.addEventListener("input", generatePromptPreview);
-//     });
+document.addEventListener("DOMContentLoaded", function() {
+    let inputs = document.querySelectorAll("#promptForm input, #promptForm textarea");
+    inputs.forEach(input => {
+        input.addEventListener("input", generatePromptPreview);
+    });
 
-//     // Generate initial preview on load
-//     generatePromptPreview();
-// });
+    // Generate initial preview on load
+    generatePromptPreview();
+});
