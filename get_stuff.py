@@ -2,7 +2,7 @@ import json
 import os
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from config import PROFILE_DIR, DEFAULT_PROFILE, MODEL_NAME
+from data import PROFILE_DIR, DEFAULT_PROFILE, MODEL_NAME
 
 def get_profiles():
     profiles = [f for f in os.listdir(PROFILE_DIR) if f.endswith('.json')]

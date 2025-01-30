@@ -1,7 +1,7 @@
 # Constants
 SUBMISSIONS_FILE = 'submissions.json'
-# MODEL_NAME = "mistralai/Mistral-7B-v0.1"
-MODEL_NAME = "llama3.2"
+MODEL_NAME = "mistralai/Mistral-7B-v0.1"
+#MODEL_NAME = "llama3.2"
 PROFILE_DIR = 'profiles/'
 IMAGE_DIR = 'static/images/'
 
