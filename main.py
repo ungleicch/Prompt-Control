@@ -94,7 +94,7 @@ if not os.path.exists(SUBMISSIONS_FILE):
     save_data([], SUBMISSIONS_FILE)
 
 
-#model, tokenizer = load_model()
+model, tokenizer = load_model()
 
 # Preprocess input for AI model
 
@@ -142,13 +142,6 @@ def create_profile():
     return jsonify({"message": f"Profile '{profile_name}' created successfully!", "profile": new_profile})
 
 
-# @app.route('/profile/load', methods=['GET'])
-# def load_default_profile():
-#     profiles = get_profiles()
-#     if profiles:
-#         profile = load_profile(profiles[0])  # Load first profile as default
-#         return jsonify(profile)
-#     return jsonify(DEFAULT_PROFILE)
 
 @app.route('/profile/switch', methods=['POST'])
 def switch_profile():
@@ -234,4 +227,4 @@ def get_submissions():
     return jsonify(submissions)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

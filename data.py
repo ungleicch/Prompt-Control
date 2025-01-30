@@ -1,7 +1,7 @@
 # Constants
-DATA_FILE = 'data.json' # get rid of this
 SUBMISSIONS_FILE = 'submissions.json'
-MODEL_NAME = "mistralai/Mistral-7B-v0.1"
+# MODEL_NAME = "mistralai/Mistral-7B-v0.1"
+MODEL_NAME = "llama3.2"
 PROFILE_DIR = 'profiles/'
 IMAGE_DIR = 'static/images/'
 
@@ -24,6 +24,7 @@ DEFAULT_PROFILE = {
     "image": "default.jpg"
 }
 
+# dont want to interrupt the conversations
 FORBIDDEN_PATTERNS = {
     r'\bgpt-?4\b': 'gpt4',
     r'\bgpt-?3\b': 'gpt3',

@@ -123,6 +123,7 @@ function switchProfile() {
 
         // Update profile name and image
         document.getElementById("profileNameDisplay").innerText = data.name || "Profile Name";
+        document.getElementById("profileImageDisplay").src = "/image/" + data.image;
     })
     .catch(error => console.error('Error loading profile:', error));
 }
@@ -137,7 +138,9 @@ function generatePromptPreview() {
 - <b>Tone:</b> ${highlightText(document.getElementById("tone").value)}
 - <b>Interests:</b> ${highlightText(document.getElementById("interests").value)}
 - <b>Response Style:</b> ${highlightText(document.getElementById("response_style").value)}
+- <b>Preferences:</b> ${highlightText(document.getElementById("preferences").value)}
 - <b>Mood:</b> ${highlightText(document.getElementById("mood").value)}
+
 
 <b>Guidelines:</b>
 - Answer user questions concisely and avoid repeating your profile information.

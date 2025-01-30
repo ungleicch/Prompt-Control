@@ -7,7 +7,7 @@
     "mood": "hyper focused",
     "response_style": "Intelligent",
     "preferences": "clear answers",
-    "input_text": "What is the partial derivertive of cos(x)/y in terms of x?",
+    "input_text": "Tell me what is important to know about the laws of motion.",
     "temperature": 0.69,
     "max_length": 149,
     "top_k": 50,

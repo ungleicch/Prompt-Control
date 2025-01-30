@@ -1,7 +1,6 @@
 import re
 import difflib
 import torch
-from config import DEFAULT_PROFILE
 from data import FORBIDDEN_PATTERNS
 
 def preprocess_input(data, tokenizer):
@@ -148,5 +147,5 @@ def contains_forbidden_words(text):
     return {
         'contains': len(detected_words) > 0,
         'count': len(detected_words),
-        'words': list(set(detected_words))  # Deduplicate while preserving first occurrence order
+        'words': list(set(detected_words))
     }

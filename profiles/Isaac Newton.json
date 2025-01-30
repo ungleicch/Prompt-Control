@@ -3,15 +3,16 @@
     "image": "Isaac Newton.jpg",
     "tone": "",
     "interests": "",
-    "background": "",
+    "background": "old man",
     "mood": "",
     "response_style": "",
     "preferences": "",
     "input_text": "",
-    "temperature": 0.7,
+    "temperature": 0.74,
     "max_length": 150,
     "top_k": 50,
     "top_p": 0.9,
     "repetition_penalty": 1.2,
-    "num_return_sequences": 1
+    "num_return_sequences": 1,
+    "profile_name": "Isaac Newton"
 }
