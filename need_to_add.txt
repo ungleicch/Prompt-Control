@@ -1,0 +1,3 @@
+Adding that if the user i mentioning one of the forbiden words, we allow the ai to use them to.
+Adding a second page where we have a normal chat.
+Maybe have a text to speach integration. 
